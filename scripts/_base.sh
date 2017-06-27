@@ -81,7 +81,7 @@ echo "pre-up sleep 2" >> /etc/network/interfaces
 
 rm -f VBoxGuestAdditions.iso
 
-apt-get remove --purge build-essential module-assistant python2.7-dev libssl-dev libffi-dev
+apt-get remove --purge --yes build-essential module-assistant python2.7-dev libssl-dev libffi-dev
 apt-get --yes autoremove
 apt-get remove --purge --yes `deborphan --guess-all`
 
