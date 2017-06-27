@@ -1,5 +1,5 @@
-# Cache objects
-packer_cache/
-
-# For built boxes
+**/.vagrant
+**/.packer_cache
 *.box
+*.iso
+*.zip
