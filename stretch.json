@@ -1,0 +1,81 @@
+{
+    "description": "Vanilla Debian Stretch base box",
+    "variables": {
+        "box_version": "9.0.0",
+        "box_changelog": "* New Major release"
+    },
+    "builders": [
+        {
+            "boot_command": [
+                "<esc><wait>",
+                "install <wait>",
+                "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/stretch-preseed.cfg <wait>",
+                "auto <wait>",
+                "locale=fr_FR <wait>",
+                "netcfg/get_hostname={{ .Name }} <wait>",
+                "netcfg/get_domain=fondation.org <wait>",
+                "debconf/frontend=noninteractive <wait>",
+                "console-setup/ask_detect=false <wait>",
+                "kbd-chooser/method=fr <wait>",
+                "console-keymaps-at/keymap=fr <wait>",
+                "keyboard-configuration/xkb-keymap=fr <wait>",
+                "net.ifnames=0<wait>",
+                "fb=false <wait>",
+                "<enter><wait>"
+            ],
+            "disk_size": "16392",
+            "guest_os_type": "Debian_64",
+            "hard_drive_interface": "sata",
+            "headless": true,
+            "http_directory": "http",
+            "iso_checksum": "08a25863ae2369de462e55b539050dab0adb03262a4aefda208e907ef9ea2fff2158a77f6a6eddb4ac7fbd2fcc9cc64edd34f70e211eceac4bb6f308fefc3f0a",
+            "iso_checksum_type": "sha512",
+            "iso_urls": [
+                "iso/debian-9.0.0-amd64-netinst.iso",
+                "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.0.0-amd64-netinst.iso"
+            ],
+            "shutdown_command": "sudo /sbin/halt -p",
+            "ssh_password": "vagrant",
+            "ssh_username": "vagrant",
+            "ssh_port": "22",
+            "ssh_wait_timeout": "10000s",
+            "type": "virtualbox-iso",
+            "guest_additions_path": "VBoxGuestAdditions.iso",
+            "vm_name": "debian-stretch",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "2048"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ]
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "pause_before": "5s",
+            "execute_command": "echo 'vagrant'| {{.Vars}} sudo --preserve-env --stdin sh '{{.Path}}'",
+            "environment_vars": [
+                "VAGRANT_BUILDER_FS=/"
+            ],
+            "scripts": [
+                "scripts/_base.sh",
+                "scripts/_minimize.sh"
+            ]
+        }
+    ],
+    "post-processors": [
+        {
+            "output": "build/debian-stretch.box",
+            "type": "vagrant"
+        }
+    ]
+}
