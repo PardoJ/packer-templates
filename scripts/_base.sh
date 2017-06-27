@@ -43,6 +43,14 @@ EOF
 chmod 0440 /etc/sudoers.d/vagrant
 
 #######################################################################
+# install ansible
+#######################################################################
+
+curl -s https://bootstrap.pypa.io/get-pip.py | python2.7
+
+pip install ansible virtualenv
+
+#######################################################################
 # speed up tweaks
 #######################################################################
 
@@ -73,7 +81,7 @@ echo "pre-up sleep 2" >> /etc/network/interfaces
 
 rm -f VBoxGuestAdditions.iso
 
-apt-get remove --purge build-essentials module-assistant
+apt-get remove --purge build-essential module-assistant python2.7-dev libssl-dev libffi-dev
 apt-get --yes autoremove
 apt-get remove --purge --yes `deborphan --guess-all`
 
